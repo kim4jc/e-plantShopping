@@ -8,6 +8,7 @@ function ProductList() {
     const [showCart, setShowCart] = useState(false); 
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
+    const [itemsInCart, setItemsInCart] = useState(0);
     const dispatch = useDispatch();
     const cartItems = useSelector(state => state.cart.items);
     const cartItemsCounter = cartItems.length;
@@ -265,10 +266,13 @@ const handleAddToCart=(plant)=>{
 
 useEffect(()=>{
     const itemsAddedToCart = {};
+    var itemsInCart = 0;
     cartItems.forEach(item => {
         itemsAddedToCart[item.name] = true;
+        itemsInCart += item.quantity;
     });
     setAddedToCart(itemsAddedToCart);
+    setItemsInCart(itemsInCart);
 },[cartItems])
 
     return (
@@ -288,7 +292,7 @@ useEffect(()=>{
             </div>
             <div style={styleObjUl}>
                 <div> <a href="#" onClick={(e)=>handlePlantsClick(e)} style={styleA}>Plants</a></div>
-                <div>
+                <div className="shoppingCartIcon">
                     <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
                         <h1 className='cart'>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="68" width="68">
@@ -300,7 +304,7 @@ useEffect(()=>{
                         </h1>
                     </a>
                     <div className="cartItemsCount">
-                        {cartItemsCounter}
+                        {itemsInCart}
                     </div>
                 </div>
             </div>
